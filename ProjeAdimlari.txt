@@ -1,0 +1,36 @@
+﻿1 => Oncelikle katmanlarımızı (Project.ENTITIES, Project.CONF ,Project.DAL, Project.BLL) class library (.Net Framework) platformunda acıyoruz. (Solution'imiza sag tıklayıp add new Project diyerek)...UI katmanını hangi display ile istiyorsanız o platformda acmalısınız...Bizim burada kullandıgımız display Windows Forms App. olarak secilmiştir... 
+
+Class Library olan projeleriniz calısabilecek projeler degildir...Bu projeler ilgili yapımız canlıya cıktıgı zaman DLL'e dönüsüp calısabilecek durumda olan projenin icerisine eklenen dosyalardır...Sizin calısabilecek tek yapınız UI katmanıdır. Bu yüzden hemen UI katmanımız olan projeyi Set As StartupProject olarak ayarlamalısınız...
+
+N-Tier
+
+---------ENTITIES Katmanı----------
+
+*Veritabanında tabloya dönüsecek olan sınıflarımızı ve enum'larımızı,varsa bunlarla ilgili Interface'leri icerecek olan katmandır...Ve varsa Domain Entity'lerimize miras verecek olan sınıflarımızı tutar...
+
+Entities katmanında sınıflarımızı actıktan sonra bu katmanı sonlandırıyoruz...
+
+-------------CONF Katmanına geciyoruz------------
+Veritabanı ayarlamalarınızı hazır bulundurup DAL'a gönderecek katmandır...Bu katmanda öncelikle EntityFramework indirilir...Sonra da referanslarına Project.ENTITIES katmanı eklenir...Sonra Configuration sınıflarımızı acıyoruz...
+
+
+------------DAL Katmanına geciyoruz-----------
+
+EF kütüphanemizi ilk basta indiriyoruz... Sonra Entities ve Conf katmanlarından referans alıyoruz... Sonra kısa bir süre icin UI katmanımıza gecip oraya da EntityFramework indirip app.config tarafına baglantı ayarlarımızı tanımlıyoruz...Sonra tekrar DAL katmanına dönüyoruz... Burada Context class'ımızı acarak onun veritabanı olusturmak icin ihtiyac duydugu baglantı adresini DbContext'in constructor'ina göndermesini saglıyor, ayarlamalarımızı (COnfiguraiton class'larımızı) tetikliyoruz ve DbSet'lerimizi söylüyoruz... Her şey bittikten sonra sistemimizin ilk testini yapmak icin Package Manager Console'a girip  migration kodlarımızı
+
+enable-migrations -enableautomaticmigrations
+update-database 
+
+terminal kodlarını yazıyoruz...
+
+Veritabanımızın olusup olusmadıgını test ediyoruz...
+
+BUrada COntext'in hangi app.config'e bakacagı , set as startup olarak ayarlanmıs proje üzerinden gerçekleşir...
+
+----------------------BLL Katmanına geciyoruz-----------
+
+Öncelikle BLL katmanına EntityFramework indiriyoruz...Sonra DAL katmanından ve Entities katmanından referans alıyoruz....Ondan sonra SingletonPattern ve GenericRepositoryPattern kısımlarını olusturuyoruz
+
+
+-----------------UI Katmanına geciyoruz----------------
+UI katmanı ENTITIES ve BLL katmanlarını referans alacak...
